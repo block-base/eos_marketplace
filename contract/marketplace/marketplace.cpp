@@ -106,9 +106,19 @@ void marketplace::purchase(uint64_t store_id, account_name username)
     });
 }
 
-void marketplace::cancell(uint64_t store_id)
+void marketplace::cancell(uint64_t store_id, account_name username)
 {
-    return;
+    require_auth(username);
+    _users.get(username, "User doesnt exist");
+
+    auto store = _stores.find(store_id);
+    auto cid = _owners.find(store->content_id);
+    eosio_assert(cid->ownername == username, "This is not your Conrent!");
+
+    if (store != _stores.end())
+    {
+        _stores.erase(store);
+    }
 }
 
 #define EOSIO_ABI_EX(TYPE, MEMBERS)                                                    \

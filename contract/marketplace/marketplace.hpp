@@ -66,5 +66,5 @@ class marketplace : public eosio::contract
 
     void purchase(uint64_t store_id, account_name username);
 
-    void cancell(uint64_t store_id);
+    void cancell(uint64_t store_id, account_name username);
 };
