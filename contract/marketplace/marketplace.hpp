@@ -3,7 +3,7 @@
 #include <eosiolib/eosio.hpp>
 #include <eosiolib/asset.hpp>
 
-using namespace std;
+using namespace eosio;
 class marketplace : public eosio::contract 
 {
     private:
@@ -12,7 +12,7 @@ class marketplace : public eosio::contract
       struct user
       {
           account_name username;
-          uint16_t amount;
+          uint64_t amount;
 
           auto primary_key() const {return username;}
       };
@@ -38,7 +38,15 @@ class marketplace : public eosio::contract
           auto primary_key() const {return store_id;}
           //auto primary_key() const { return content_id; }
       };
-      
+
+      struct st_transfer
+      {
+          name from;
+          name to;
+          eosio::asset quantity;
+          std::string memo;
+      };
+
       typedef eosio::multi_index<N(users),user> users_table;
       typedef eosio::multi_index<N(owners),owner> owners_table;
       typedef eosio::multi_index<N(stores),store> stores_table;
