@@ -24,6 +24,8 @@ void marketplace::transfer(uint64_t sender, uint64_t receiver)
 void marketplace::publish(account_name username, std::string content)
 {
     require_auth(username);
+    //transferを打ってuser登録しないと実行できない
+    _users.get(username, "User doesnt exist");
 
     uint64_t check = 0;
 
@@ -50,6 +52,7 @@ void marketplace::publish(account_name username, std::string content)
 void marketplace::sell(uint64_t content_id, account_name owner, uint64_t value)
 {
     require_auth(owner);
+    _users.get(owner, "User doesnt exist");
     uint64_t check = 0;
     auto owner_check = _owners.find(content_id);
     eosio_assert(owner_check->ownername == owner, "Cant Sell Your Contents!");
@@ -77,6 +80,30 @@ void marketplace::sell(uint64_t content_id, account_name owner, uint64_t value)
 void marketplace::purchase(uint64_t store_id, account_name username)
 {
     require_auth(username);
+    _users.get(username, "User doesnt exist");
+
+    auto store = _stores.find(store_id);
+    auto user = _users.find(username);
+    auto cid = _owners.find(store->content_id);
+    auto owner = _users.find(cid->ownername);
+
+    eosio_assert(store->value < user->amount, "You have not money! Go Back!");
+    eosio_assert(cid->ownername != username, "This is your Content! Go Back!");
+
+    uint64_t sum = user->amount - store->value;
+    
+    _users.modify(user, _self, [&](auto &modified_user) 
+    {
+        modified_user.amount = modified_user.amount - sum;
+    });
+
+    _users.modify(owner, _self, [&](auto &modified_user) {
+        modified_user.amount = modified_user.amount + sum;
+    });
+
+    _owners.modify(cid, _self, [&](auto &modified_user) {
+        modified_user.ownername = username;
+    });
 }
 
 void marketplace::cancell(uint64_t store_id)
