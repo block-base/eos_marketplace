@@ -38,7 +38,8 @@ void marketplace::publish(account_name username, std::string content)
 
     if(check == 0)
     {
-        _owners.emplace(get_self(), [&](auto &modified_user) {
+        _owners.emplace(get_self(), [&](auto &modified_user) 
+        {
             modified_user.content_id = _owners.available_primary_key();
             modified_user.content = content;
             modified_user.ownername = username;
@@ -49,6 +50,28 @@ void marketplace::publish(account_name username, std::string content)
 void marketplace::sell(uint64_t content_id, account_name owner, uint64_t value)
 {
     require_auth(owner);
+    uint64_t check = 0;
+    auto owner_check = _owners.find(content_id);
+    eosio_assert(owner_check->ownername == owner, "Cant Sell Your Contents!");
+
+    for(auto &item : _stores)
+    {
+        if(item.content_id == content_id)
+        {
+            check++;
+            break;
+        }
+    }
+
+    eosio_assert(check == 0 , "Already Sell Your Content!");
+
+    _stores.emplace(get_self(), [&](auto &modified_user)
+    {
+        modified_user.store_id = _stores.available_primary_key();
+        modified_user.content_id = content_id;
+        modified_user.content = owner_check->content;
+        modified_user.value = value;
+    });
 }
 
 void marketplace::purchase(uint64_t store_id, account_name username)
