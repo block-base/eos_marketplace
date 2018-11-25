@@ -24,6 +24,26 @@ void marketplace::transfer(uint64_t sender, uint64_t receiver)
 void marketplace::publish(account_name username, std::string content)
 {
     require_auth(username);
+
+    uint64_t check = 0;
+
+    for(auto &item : _owners)
+    {
+        if(item.content == content)
+        {
+            check++;
+            break;
+        }
+    }
+
+    if(check == 0)
+    {
+        _owners.emplace(get_self(), [&](auto &modified_user) {
+            modified_user.content_id = _owners.available_primary_key();
+            modified_user.content = content;
+            modified_user.ownername = username;
+        });
+    }
 }
 
 void marketplace::sell(uint64_t content_id, account_name owner, uint64_t value)
