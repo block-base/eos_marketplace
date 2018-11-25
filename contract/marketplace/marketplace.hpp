@@ -1,6 +1,6 @@
 #include <string>
 #include <stdio.h>
-#include <eosiolob/eosio.hpp>
+#include <eosiolib/eosio.hpp>
 #include <eosiolib/asset.hpp>
 
 using namespace std;
@@ -35,9 +35,10 @@ class marketplace : public eosio::contract
           std::string content;
           uint32_t value;
 
-          auto primary_key() const {return store_id}
-          auto primary_key() const {return conten_id}
+          auto primary_key() const {return store_id;}
+          //auto primary_key() const { return content_id; }
       };
+      
       typedef eosio::multi_index<N(users),user> users_table;
       typedef eosio::multi_index<N(owners),owner> owners_table;
       typedef eosio::multi_index<N(stores),store> stores_table;
@@ -58,4 +59,4 @@ class marketplace : public eosio::contract
     void purchase(uint64_t store_id, account_name username);
 
     void cancell(uint64_t store_id);
-}
+};
