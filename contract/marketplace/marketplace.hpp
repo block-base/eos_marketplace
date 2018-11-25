@@ -47,7 +47,7 @@ class marketplace : public eosio::contract
       stores_table _stores;
 
     public:
-    marketplace(account_name self): contract(self), _users(self,self), _owners(self,self), stores_table(self,self){}
+    marketplace(account_name self): contract(self), _users(self,self), _owners(self,self), _stores(self,self){}
 
     void transfer(uint64_t sender, uint64_t receiver);
 
