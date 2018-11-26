@@ -108,6 +108,9 @@ void marketplace::purchase(uint64_t store_id, account_name username)
     _owners.modify(cid, _self, [&](auto &modified_user) {
         modified_user.ownername = username;
     });
+
+    _stores.erase(store);
+
 }
 
 // @abi action
