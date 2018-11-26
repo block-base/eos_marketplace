@@ -1,0 +1,2 @@
+cleos wallet unlock --password PW5K3wU92Ggnpa26Ghwvg6gGQ8W5k1vgmbdvXyVfjXGtDHjs8sATZ
+cleos wallet import --private-key 5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3

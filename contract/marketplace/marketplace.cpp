@@ -149,3 +149,7 @@ void marketplace::cancell(uint64_t store_id, account_name username)
     }
 
 EOSIO_ABI_EX(marketplace, (transfer)(publish)(sell)(purchase)(cancell))
+
+#undef EOSIO_ABI
+#define EOSIO_ABI(TYPE, MEMBERS)
+EOSIO_ABI(marketplace, (publish)(sell)(purchase)(cancell))
