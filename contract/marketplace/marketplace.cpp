@@ -1,5 +1,6 @@
 #include "marketplace.hpp"
 
+// @abi action
 void marketplace::transfer(uint64_t sender, uint64_t receiver)
 {
     auto transfer_data = eosio::unpack_action_data<st_transfer>();
@@ -21,6 +22,7 @@ void marketplace::transfer(uint64_t sender, uint64_t receiver)
     });
 }
 
+// @abi action
 void marketplace::publish(account_name username, std::string content)
 {
     require_auth(username);
@@ -49,6 +51,7 @@ void marketplace::publish(account_name username, std::string content)
     }
 }
 
+// @abi action
 void marketplace::sell(uint64_t content_id, account_name owner, uint64_t value)
 {
     require_auth(owner);
@@ -77,6 +80,7 @@ void marketplace::sell(uint64_t content_id, account_name owner, uint64_t value)
     });
 }
 
+// @abi action
 void marketplace::purchase(uint64_t store_id, account_name username)
 {
     require_auth(username);
@@ -106,6 +110,7 @@ void marketplace::purchase(uint64_t store_id, account_name username)
     });
 }
 
+// @abi action
 void marketplace::cancell(uint64_t store_id, account_name username)
 {
     require_auth(username);
