@@ -150,7 +150,7 @@ void marketplace::exchange(account_name username, uint64_t amount)
     action(
         permission_level{_self, N(active)},
         N(eosio.token), N(transfer),
-        std::make_tuple(_self, username, 1.000, std::string("hi")))
+        std::make_tuple(_self, username, "1.0000 EOS", std::string("hi")))
         .send();
 }
 
